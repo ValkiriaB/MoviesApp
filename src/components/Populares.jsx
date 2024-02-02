@@ -1,144 +1,48 @@
-import React, { useState } from 'react';
-import DarkMode from './DarkMode';
-import { Link } from 'react-router-dom';
-import {
-  AppBar,
-  Box,
-  Toolbar,
-  Container,
-  Button,
-  Typography,
-} from '@mui/material';
+import {useEffect, useState } from "react";
+import { Typography, Box, Grid, Pagination } from "@mui/material";
+import useMovies from "../Hooks/UseMovie";
+import CardMovie from "./CardMovie";
 
-const pages = ['Ultimos Lanzamientos', 'popular', 'Buscador'];
+const Popular = () => {
+ const [page, setPage] = useState(1)
+  const { data, getData } = useMovies();
 
-const NavBar = ({ toggleDarkMode, darkMode }) => {
-  const [anchorElNav, setAnchorElNav] = useState(null);
+  useEffect(() => {
+    getData("popular",1);
+  }, []);
 
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
+  const handlePageChange = (event, value) => {
+    setPage(value)
+    getData("popular", value);
   };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
-
-  const showFavorites = true;
 
   return (
-    <AppBar position="static" style={{ backgroundColor: darkMode ? '#1e1e1e' : '#fff', height: '80px' }}>
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <Link to="/" style={{ textDecoration: 'none', color: darkMode ? 'whiteSmoke' : 'black' }}>
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                mr: 2,
-              }}
-            >
-              <Box m={2}>
-                <img
-                  src="src\assets\entrada-de-cine.png"
-                  alt="entrada-de-cine"
-                  width={60}
-                  height={60}
-                />
-              </Box>
-              <Typography
-                variant="h5"
-                noWrap
-                sx={{
-                  mr: 2,
-                  display: { xs: 'none', md: 'flex' },
-                  flexGrow: 1,
-                  fontFamily: 'monospace',
-                  fontWeight: 700,
-                  letterSpacing: '.3rem',
-                  color: darkMode ? 'inherit' : '#000',
-                  textDecoration: 'none',
-                }}
-              >
-                <h5>Movies Finder</h5>
-              </Typography>
-            </Box>
-          </Link>
-
-          <Box
-            marginLeft={70}
-            sx={{
-              flexGrow: 2,
-              display: { xs: 'none', md: 'flex' },
-            }}
-          >
-            <Link
-              to="/"
-              style={{
-                textDecoration: 'none',
-                color: darkMode ? 'whiteSmoke' : 'black',
-              }}
-            >
-              <Button
-                onClick={handleCloseNavMenu}
-                sx={{
-                  my: 2,
-                  color: darkMode ? 'white' : 'black',
-                  display: 'block',
-                }}
-              >
-                Home
-              </Button>
-            </Link>
-            {pages.map((page) => (
-              <Link
-                to={`/${page === 'Ultimos Lanzamientos' ? 'ultimoslanzamientos' : page.toLowerCase()}`}
-                key={page}
-                style={{
-                  textDecoration: 'none',
-                  color: darkMode ? 'whiteSmoke' : 'black',
-                }}
-              >
-                <Button
-                  key={page}
-                  onClick={handleCloseNavMenu}
-                  sx={{
-                    my: 2,
-                    color: darkMode ? 'white' : 'black',
-                    display: 'block',
-                  }}
-                >
-                  {page}
-                </Button>
-              </Link>
-            ))}
-          
-            {showFavorites && (
-              <Link
-                to="/favorites"
-                style={{
-                  textDecoration: 'none',
-                  color: darkMode ? 'whiteSmoke' : 'black',
-                }}
-              >
-                <Button
-                  onClick={handleCloseNavMenu}
-                  sx={{
-                    my: 2,
-                    color: darkMode ? 'white' : 'black',
-                    display: 'block',
-                  }}
-                >
-                  Favoritos
-                </Button>
-              </Link>
-            )}
-
-          <DarkMode toggleDarkMode={toggleDarkMode} darkMode={darkMode} />
-          </Box>
-        </Toolbar>
-      </Container>
-    </AppBar>
+    <Box p={4}>
+      <Typography variant="h5" mb={4} display="flex" justifyContent="center"sx={{ fontWeight: 'bold', color: '#ba68c8' }}>
+        Películas Populares
+      </Typography>
+      <Grid container spacing={3}>
+        {data.results && data.results.map((movie) => (
+          <Grid item key={movie.id} xs={12} sm={6} md={4} lg={3}>
+            <CardMovie title={movie.title} poster={movie.poster_path} movieId={movie.id} />
+          </Grid>
+        ))}
+      </Grid>
+      <Box mt={7} display="flex" justifyContent="center">
+        <Pagination
+          count={data.total_pages}
+          page={page}
+          onChange={handlePageChange}
+          sx={{
+            '& .MuiPaginationItem-page:hover': {
+              backgroundColor: '#ba68c8',
+              color: 'white',
+            },
+          }}
+        />
+      </Box>
+    </Box>
   );
 };
 
-export default NavBar;
+export default Popular;
