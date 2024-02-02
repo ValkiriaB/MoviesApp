@@ -1,4 +1,4 @@
-// FavoritesContext.js
+
 import { createContext, useContext } from "react";
 import useLocalStorage from "../Hooks/useLocalStorage";
 
@@ -8,11 +8,13 @@ const FavoritesProvider = ({ children }) => {
   const [favorites, setFavorites] = useLocalStorage("favMovies", []);
 
   const addFavorite = (movie) => {
-    setFavorites([...favorites, movie]);
+    if (!isFavorite(movie.id)) {
+      setFavorites([...favorites, movie]);
+    }
   };
 
   const removeFavorite = (movieId) => {
-    setFavorites(favorites.filter((movie) => movie.id !== movieId));
+    setFavorites((prevFavorites) => prevFavorites.filter((movie) => movie.id !== movieId));
   };
 
   const isFavorite = (movieId) => {
@@ -38,3 +40,4 @@ export const useFavorites = () => {
 };
 
 export default FavoritesProvider;
+

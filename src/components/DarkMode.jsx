@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Button from '@mui/material/Button';
@@ -6,10 +6,11 @@ const lightTheme = createTheme();
 const darkTheme = createTheme({
   palette: {
     mode: 'dark',
+
   },
 });
 
-const App = () => {
+const DarkMode = () => {
   const [darkMode, setDarkMode] = useState(false);
 
   const toggleDarkMode = () => {
@@ -26,4 +27,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default DarkMode;

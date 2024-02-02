@@ -1,17 +1,19 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import useMovies from "../Hooks/UseMovie";
 import { useParams } from "react-router-dom";
 import { Box, Card, CardContent, Typography, Button } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { useFavorites } from "../context/FavoritesContext";
 
 const DetailMovie = () => {
   const { id } = useParams();
   const { getData, data, getVideo } = useMovies();
   const [video, setVideo] = useState(null);
-  const { addFavorite, removeFavorite, isFavorite } = useFavorites();
+  const { addFavorite, removeFavorite, isFavorite, syncFavorites } = useFavorites();
   const [isFavoriteMovie, setIsFavoriteMovie] = useState(false);
   const [trailerError, setTrailerError] = useState(false);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,22 +29,39 @@ const DetailMovie = () => {
   }, [id, getData, getVideo]);
 
   useEffect(() => {
-   
     setIsFavoriteMovie(isFavorite(id));
   }, [id, isFavorite]);
 
-  const handleFavoriteToggle = () => {
-    if (isFavoriteMovie) {
-      removeFavorite(id);
-    } else {
-      addFavorite({
-        id: data.id,
-        title: data.title,
-        poster_path: data.poster_path,
-      
-      });
+  useEffect(() => { 
+    setIsFavoriteMovie(isFavorite(id));
+    if (!isFavorite(id)) {
+      localStorage.removeItem(`isFavorite_${id}`);
     }
-    setIsFavoriteMovie((prev) => !prev);
+  }, [id, isFavorite]);
+
+  const handleFavoriteToggle = async () => {
+    if (!buttonDisabled) {
+      setButtonDisabled(true);
+
+      if (isFavoriteMovie) {
+        await removeFavorite(id);
+      } else {
+        await addFavorite({
+          id: data.id,
+          title: data.title,
+          poster_path: data.poster_path,
+        });
+      }
+
+      setIsFavoriteMovie(!isFavoriteMovie);
+      if (isFavoriteMovie) {
+        localStorage.setItem(`isFavorite_${id}`, (!isFavoriteMovie).toString());
+      }
+
+      syncFavorites();
+
+      setButtonDisabled(false);
+    }
   };
 
   return (
@@ -128,7 +147,7 @@ const DetailMovie = () => {
                   >
                     <Button
                       variant="outlined"
-                      style={{ color: "#ba68c8", borderColor: "#ba68c8" }}
+                      style={{ color: "#1e1e1e", borderColor: "#ba68c8" }}
                     >
                       Ver Trailer
                     </Button>
@@ -141,9 +160,18 @@ const DetailMovie = () => {
                 )}
                 <Button
                   onClick={handleFavoriteToggle}
-                  color={isFavoriteMovie ? "warning" : "inherit"}
+                  color="inherit"
+                  variant="outlined"
+                  style={{
+                    color: isFavoriteMovie ? "#98d02d" : "#ba68c8",
+                    borderColor: isFavoriteMovie ? "#98d02d" : "#ba68c8",
+                    backgroundColor: "transparent",
+                  }}
+                  startIcon={isFavoriteMovie ? <CheckCircleOutlineIcon /> : <StarIcon />}
+                  sx={{ textTransform: 'none' }}
+                  disabled={buttonDisabled}
                 >
-                  <StarIcon />
+                  {isFavoriteMovie ? 'Añadido a Favoritos' : 'Agregar a Favoritos'}
                 </Button>
               </Box>
             </Box>
@@ -155,3 +183,4 @@ const DetailMovie = () => {
 };
 
 export default DetailMovie;
+

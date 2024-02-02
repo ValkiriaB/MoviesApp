@@ -24,7 +24,7 @@ const CardMovie = ({ title, poster, movieId }) => {
             {title}
           </Typography>
           <Button
-            style={{ color: 'violet', borderRadius: '40px' }}
+            style={{ color: 'violet', borderRadius: '40px'}}
             onClick={handleButtonClick}
           >
             <ChevronRightRoundedIcon />

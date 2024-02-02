@@ -1,13 +1,14 @@
 import React from 'react';
 import { Typography, Box, List, ListItem, ListItemText, ListItemAvatar, Avatar, Button, Divider } from '@mui/material';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
+import { useEffect} from 'react'
 import useMovies from '../Hooks/UseMovie';
 
 const ListMovie = ({ type }) => {
   const { data, getData } = useMovies();
 
-  React.useEffect(() => {
+  useEffect(() => {
     getData(type === 'popular' ? 'popular' : 'top_rated', 1);
   }, [type, getData]);
 

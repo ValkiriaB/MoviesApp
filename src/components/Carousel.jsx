@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import{ useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import { Grid, Typography, Box, Button, Card, CardContent } from '@mui/material';
+import { Grid, Typography, Button, Card, CardContent } from '@mui/material';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import useMovies from '../Hooks/UseMovie.jsx';

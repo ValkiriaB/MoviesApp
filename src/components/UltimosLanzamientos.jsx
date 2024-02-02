@@ -1,23 +1,23 @@
-import React from "react";
+import {useEffect, useState } from "react";
 import { Typography, Box, Grid, Pagination} from "@mui/material";
-import { useNavigate } from 'react-router-dom';
 import useMovies from "../Hooks/UseMovie";
 import CardMovie from "./CardMovie";
 
 const LatestReleases = () => {
-  const navigate = useNavigate();
+  const [page, setPage] = useState(1)
   const { data, getData } = useMovies();
 
-  React.useEffect(() => {
+  useEffect(() => {
     getData("now_playing", 1);
-  }, [getData]);
+  }, []);
 
   const handlePageChange = (event, value) => {
+    setPage(value)
     getData("now_playing", value);
   };
 
   return (
-    <Box p={3}>
+    <Box p={4}>
       <Typography variant="h5" mb={4} display="flex" justifyContent="center" sx={{ fontWeight: 'bold', color: '#ba68c8'}}>
         Últimos Lanzamientos
       </Typography>
@@ -28,10 +28,10 @@ const LatestReleases = () => {
           </Grid>
         ))}
       </Grid>
-      <Box mt={3} display="flex" justifyContent="center">
+      <Box mt={7} display="flex" justifyContent="center">
         <Pagination
           count={data.total_pages}
-          page={data.page}
+          page={page}
           onChange={handlePageChange}
           sx={{
             '& .MuiPaginationItem-page:hover': {

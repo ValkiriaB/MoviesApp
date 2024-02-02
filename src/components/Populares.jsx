@@ -1,18 +1,18 @@
-import React from "react";
+import {useEffect, useState } from "react";
 import { Typography, Box, Grid, Pagination } from "@mui/material";
-import { useNavigate } from 'react-router-dom';
 import useMovies from "../Hooks/UseMovie";
 import CardMovie from "./CardMovie";
 
 const Popular = () => {
-  const navigate = useNavigate();
+ const [page, setPage] = useState(1)
   const { data, getData } = useMovies();
 
-  React.useEffect(() => {
-    getData("popular", 1);
-  }, [getData]);
+  useEffect(() => {
+    getData("popular",1);
+  }, []);
 
   const handlePageChange = (event, value) => {
+    setPage(value)
     getData("popular", value);
   };
 
@@ -31,7 +31,7 @@ const Popular = () => {
       <Box mt={7} display="flex" justifyContent="center">
         <Pagination
           count={data.total_pages}
-          page={data.page}
+          page={page}
           onChange={handlePageChange}
           sx={{
             '& .MuiPaginationItem-page:hover': {

@@ -1,21 +1,20 @@
 import React from "react";
-import Dark from "../components/DarkMode";
+import DarkMode from './DarkMode';
+import { useState} from 'react';
 import { Link } from "react-router-dom";
 import {
   AppBar,
   Box,
   Toolbar,
-  IconButton,
-  Typography,
-  Menu,
   Container,
   Button,
+  Typography,
 } from "@mui/material";
 
 const pages = ["Ultimos Lanzamientos", "popular", "Buscador"];
 
 export default function NavBar() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
+  const [anchorElNav, setAnchorElNav] = useState(null);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -24,6 +23,8 @@ export default function NavBar() {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
+
+  const showFavorites = true; 
 
   return (
     <AppBar position="static" sx={{ backgroundColor: "#1e1e1e", height: "80px" }}>
@@ -111,15 +112,31 @@ export default function NavBar() {
                 </Button>
               </Link>
             ))}
-            <Link
-              to="/buscador"
-              style={{
-                textDecoration: "none",
-                color: "whiteSmoke",
-              }}
-            >
-            </Link>
-            <Dark />
+          
+            {showFavorites && (
+              <Link
+                to="/favorites"
+                style={{
+                  textDecoration: "none",
+                  color: "whiteSmoke",
+                }}
+              >
+                <Button
+                  onClick={handleCloseNavMenu}
+                  sx={{
+                    my: 2,
+                    color: "white",
+                    display: "block",
+                  }}
+                >
+                  Favoritos
+                </Button>
+              </Link>
+            )}
+
+           
+
+            <DarkMode />
           </Box>
         </Toolbar>
       </Container>
