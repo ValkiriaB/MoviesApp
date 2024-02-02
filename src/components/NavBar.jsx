@@ -39,7 +39,7 @@ const NavBar = ({ toggleDarkMode, darkMode }) => {
             >
               <Box m={2}>
                 <img
-                  src="\assets\entrada-de-cine.png"
+                  src="entrada-de-cine.png"
                   alt="entrada-de-cine"
                   width={60}
                   height={60}
