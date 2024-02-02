@@ -1,29 +1,14 @@
-import { useState } from 'react';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import Button from '@mui/material/Button';
-const lightTheme = createTheme();
-const darkTheme = createTheme({
-  palette: {
-    mode: 'dark',
 
-  },
-});
+import React from 'react';
+import { IconButton } from '@mui/material';
+import MoonIcon from '../assets/luna.png';  
+import SunIcon from '../assets/sol.png';    
 
-const DarkMode = () => {
-  const [darkMode, setDarkMode] = useState(false);
-
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-  };
-
+const DarkMode = ({ toggleDarkMode, darkMode }) => {
   return (
-    <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
-      <CssBaseline /> 
-      <Button  onClick={toggleDarkMode}>
-        {darkMode ? '☀️' : '🌙'}
-      </Button>
-    </ThemeProvider>
+    <IconButton onClick={toggleDarkMode} color="inherit">
+      {darkMode ? <img src={SunIcon} alt="Sun" width="25" height="25" /> : <img src={MoonIcon} alt="Moon" width="25" height="25" />}
+    </IconButton>
   );
 };
 

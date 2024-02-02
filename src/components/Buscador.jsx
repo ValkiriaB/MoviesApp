@@ -1,39 +1,44 @@
 import React from "react";
 import { TextField, Container, Grid, Box, Typography, IconButton, InputAdornment } from "@mui/material";
-import {useState } from "react";
+import { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import useMovies from "../Hooks/UseMovie";
 import CardMovie from "./CardMovie";
 import NotFound from "../assets/searching.png";
 
 const Buscador = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [hasSearched, setHasSearched] = useState(false);
-  const { searchMovie, data, loading, error } = useMovies();
-  const [showNotFound, setShowNotFound] = useState(false);
 
-  let searchTimer;
-
-  const handleInputChange = (event) => {
-    const value = event.target.value;
-    setSearchTerm(value);
-    setHasSearched(value.trim() !== "");
-    if (searchTimer) {
-      clearTimeout(searchTimer);
-    }
-
-    searchTimer = setTimeout(() => {
-      searchMovie(value, 1);
-      setShowNotFound(value.trim() !== "" && !loading && !error && (!data.results || data.results.length === 0));
-    }, 900); 
-  };
+    const [searchTerm, setSearchTerm] = useState("");
+    const [hasSearched, setHasSearched] = useState(false);
+    const { searchMovie, data, loading, error } = useMovies();
+    const [showNotFound, setShowNotFound] = useState(false);
+  
+    let searchTimer;
+  
+    const handleInputChange = (event) => {
+      const value = event.target.value;
+      setSearchTerm(value);
+      setHasSearched(value.trim() !== "");
+      if (searchTimer) {
+        clearTimeout(searchTimer);
+      }
+  
+      searchTimer = setTimeout(() => {
+        searchMovie(value, 1);
+        setShowNotFound(
+          value.trim() !== "" &&
+            !loading &&
+            !error &&
+            (!data.results || data.results.length === 0)
+        );
+      }, 900);
+    };
 
   const handleClearSearch = () => {
     setSearchTerm("");
     setHasSearched(false);
     setShowNotFound(false);
 
-    
     if (searchTimer) {
       clearTimeout(searchTimer);
     }
@@ -57,6 +62,17 @@ const Buscador = () => {
                 </IconButton>
               </InputAdornment>
             ),
+          }}
+          sx={{
+            '& label': {
+              color: '#ba68c8', // Cambia el color de la etiqueta
+            },
+            '& fieldset': {
+              borderColor: '#ba68c8 !important', // Cambia el color del borde
+            },
+            '&:hover fieldset': {
+              borderColor: '#ba68c8 !important', // Cambia el color del borde al pasar el mouse
+            },
           }}
         />
       </Box>

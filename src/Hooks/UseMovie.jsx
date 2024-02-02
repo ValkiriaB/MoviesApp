@@ -4,7 +4,7 @@ import axios from "axios";
 
 
 const useMovies = () => {
-  let API_KEY =  import.meta.env.VITE_API_KEY;
+  let AccessTokenAuth = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwZThkNzYyNDgwZTg2YWYxNGQ0NTliOTNhY2I0NTU1OSIsInN1YiI6IjY1YWFmNzFjYzQzM2VhMDBjNTc0YWQ1NyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.r-3jAYDFi5o9uv7WUObYZFjXgj9TkG5mHs6uikSQws8';
   const [data, setData] = useState([]);
   const [video, setVideo] = useState(null); 
   const [error, setError] = useState(null);
@@ -15,7 +15,7 @@ const useMovies = () => {
       setLoading(true);
       const response = await axios.get(url, {
         headers: {
-          Authorization: `Bearer ${API_KEY}`,
+          Authorization: `Bearer ${AccessTokenAuth}`,
         },
       });
 
@@ -48,7 +48,7 @@ const useMovies = () => {
     try {
       const response = await axios.get(url, {
         headers: {
-          Authorization: `Bearer ${API_KEY}`,
+          Authorization: `Bearer ${AccessTokenAuth}`,
         },
       });
 
